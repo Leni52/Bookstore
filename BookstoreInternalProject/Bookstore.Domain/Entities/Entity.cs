@@ -1,4 +1,6 @@
-﻿namespace Bookstore.Domain.Entities
+﻿using System;
+
+namespace Bookstore.Domain.Entities
 {
     public class Entity
     {
