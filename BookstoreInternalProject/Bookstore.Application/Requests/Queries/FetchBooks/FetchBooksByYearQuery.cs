@@ -1,35 +1,32 @@
 ﻿using Bookstore.Application.Common.Interfaces;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Bookstore.Application.Requests.Queries.FetchBooks
 {
-    public class FetchBookByIdQuery : IRequest<BookDto>
+    public class FetchBooksByYearQuery : IRequest<IEnumerable<BookDto>>
     {
-        public Guid BookId { get; set; }
-        public class FetchBookByIdQueryHandler : IRequestHandler<FetchBookByIdQuery, BookDto>
+        public int YearOfPublishing { get; set; }
+        public class FetchBooksByYearQueryHandler : IRequestHandler<FetchBooksByYearQuery, IEnumerable<BookDto>>
         {
             private readonly IBookStoreContext context;
 
-            public FetchBookByIdQueryHandler(IBookStoreContext context)
+            public FetchBooksByYearQueryHandler(IBookStoreContext context)
             {
                 this.context = context;
             }
-            public async Task<BookDto> Handle(FetchBookByIdQuery request, CancellationToken cancellationToken)
+
+            public async Task<IEnumerable<BookDto>> Handle(FetchBooksByYearQuery request, CancellationToken cancellationToken)
             {
-
-                var bookId = request.BookId;
-
-                var book = await this.context
+                var year = request.YearOfPublishing;
+                var books = await this.context
                     .Books
                     .Include(b => b.Author)
-                    .Where(b => b.Id == bookId)
+                     .Where(b => b.YearOfPublishing == year)
                     .Select(b => new BookDto
                     {
                         Id = b.Id,
@@ -39,13 +36,10 @@ namespace Bookstore.Application.Requests.Queries.FetchBooks
                         Genre = b.Genre,
                         AuthorName = b.Author.Name
                     })
-                    .FirstOrDefaultAsync();
+                    .ToListAsync();
 
-                return book;
+                return books;
             }
-
         }
     }
-
 }
-

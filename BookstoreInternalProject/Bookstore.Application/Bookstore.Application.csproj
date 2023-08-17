@@ -5,16 +5,17 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<Folder Include="Requests\Commands\" />
-	</ItemGroup>
-
-	<ItemGroup>
 	  <PackageReference Include="MediatR" Version="12.1.1" />
 	  <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.21" />
 	</ItemGroup>
 
 	<ItemGroup>
 	  <ProjectReference Include="..\Bookstore.Domain\Bookstore.Domain.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Requests\Commands\" />
+	  <Folder Include="Requests\Queries\FetchAuthors\" />
 	</ItemGroup>
 
 </Project>

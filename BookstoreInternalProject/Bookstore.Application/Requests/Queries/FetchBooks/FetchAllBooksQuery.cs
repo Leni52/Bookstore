@@ -29,6 +29,7 @@ namespace Bookstore.Application.Requests.Queries.FetchBooks
                         Id = b.Id,
                         Title = b.Title,
                         Description = b.Description,
+                        YearOfPublishing = b.YearOfPublishing,
                         Genre = b.Genre,
                         AuthorName = b.Author.Name
                     })
