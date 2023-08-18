@@ -15,7 +15,7 @@
 
 	<ItemGroup>
 	  <Folder Include="Requests\Commands\" />
-	  <Folder Include="Requests\Queries\FetchAuthors\" />
+	  <Folder Include="Requests\Queries\NewFolder\" />
 	</ItemGroup>
 
 </Project>
