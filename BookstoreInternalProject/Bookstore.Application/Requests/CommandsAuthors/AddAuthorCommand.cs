@@ -1,5 +1,6 @@
 ﻿using Bookstore.Application.Common.Interfaces;
 using MediatR;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -24,6 +25,8 @@ namespace Bookstore.Application.Requests.CommandsAuthors
                     {
                         Name = request.Name,
                         Biography = request.Biography,
+                        CreatedAt = DateTime.Now,
+                        ModifiedAt = DateTime.Now
 
                     });
                     await this.context.SaveChangesAsync();

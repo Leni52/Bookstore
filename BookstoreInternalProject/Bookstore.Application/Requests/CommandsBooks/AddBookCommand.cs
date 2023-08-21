@@ -2,6 +2,7 @@
 using Bookstore.Domain.Common;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -40,6 +41,8 @@ namespace Bookstore.Application.Requests.Commands
                         Genre = request.Genre,
                         YearOfPublishing = request.YearOfPublishing,
                         AuthorId = author.Id,
+                        CreatedAt = DateTime.Now,
+                        ModifiedAt = DateTime.Now
                     });
                     await this.context.SaveChangesAsync();
                     return true;
