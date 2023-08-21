@@ -32,10 +32,16 @@ namespace Bookstore.WebHost.Controllers
         [HttpDelete("bookId")]
         public async Task<IActionResult> DeleteBookById(Guid bookId)
         {
-            var command = new DeleteAuthorByIdCommand(bookId);
+            var command = new DeleteBookByIdCommand(bookId);
             return Ok(await this.mediator.Send(command));
         }
 
+        [HttpDelete("title")]
+        public async Task<IActionResult> DeleteBookByTitle(string bookTitle)
+        {
+            var command = new DeleteBookByTitleCommand(bookTitle);
+            return Ok(await this.mediator.Send(command));
+        }
         [HttpPut("bookId")]
         public async Task<IActionResult> UpdateBookById(Guid bookId, Book book)
         {
@@ -47,5 +53,6 @@ namespace Bookstore.WebHost.Controllers
             var result = await mediator.Send(command);
             return Ok(result);
         }
+
     }
 }
