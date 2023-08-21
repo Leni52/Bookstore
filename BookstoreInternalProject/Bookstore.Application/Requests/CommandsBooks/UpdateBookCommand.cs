@@ -19,11 +19,13 @@ namespace Bookstore.Application.Requests.CommandsBooks
         public GenreType Genre { get; set; }
         public int YearOfPublishing { get; set; }
         public Guid AuthorId { get; set; }
-        public UpdateBookCommand(string title, string description, int yearOfPublishing)
+        public UpdateBookCommand(string title, string description, int yearOfPublishing, Guid authorId, GenreType genre)
         {
             Title = title;
             Description = description;
             YearOfPublishing = yearOfPublishing;
+            AuthorId = authorId;
+            Genre = genre;
         }
         public class UpdateBookCommandHandler : IRequestHandler<UpdateBookCommand, Book>
         {

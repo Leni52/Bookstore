@@ -34,7 +34,6 @@ namespace Bookstore.Application.Requests.CommandsAuthors
                 }
                 catch (System.Exception)
                 {
-
                     return false;
                 }
             }

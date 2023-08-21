@@ -8,21 +8,21 @@ using System.Threading.Tasks;
 
 namespace Bookstore.Application.Requests.CommandsBooks
 {
-    public class DeleteBookByIdCommand : IRequest<Guid>
+    public class DeleteAuthorByIdCommand : IRequest<Guid>
     {
         public Guid BookId { get; set; }
-        public DeleteBookByIdCommand(Guid bookid)
+        public DeleteAuthorByIdCommand(Guid bookid)
         {
             BookId = bookid;
         }
-        public class DeleteBookByIdHandler : IRequestHandler<DeleteBookByIdCommand, Guid>
+        public class DeleteBookByIdHandler : IRequestHandler<DeleteAuthorByIdCommand, Guid>
         {
             private readonly IBookStoreContext context;
             public DeleteBookByIdHandler(IBookStoreContext context)
             {
                 this.context = context;
             }
-            public async Task<Guid> Handle(DeleteBookByIdCommand request, CancellationToken cancellationToken)
+            public async Task<Guid> Handle(DeleteAuthorByIdCommand request, CancellationToken cancellationToken)
             {
                 var book = await context
                      .Books
