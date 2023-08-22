@@ -29,13 +29,14 @@ namespace Bookstore.WebHost.Controllers
             return Ok(await this.mediator.Send(command));
         }
 
+        /*
         [HttpDelete("authorId")]
         public async Task<IActionResult> DeleteAuthorById(Guid authorId)
         {
             var command = new DeleteAuthorByIdCommand(authorId);
             return Ok(await this.mediator.Send(command));
         }
-
+        */
         [HttpPut("authorId")]
         public async Task<IActionResult> UpdateBookById(Guid authorId, Author author)
         {
