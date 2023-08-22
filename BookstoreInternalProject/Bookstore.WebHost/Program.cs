@@ -1,12 +1,13 @@
 
 using Bookstore.Infrastructure;
-using System.Configuration;
+using System.Reflection;
+using Bookstore.Application;
 
 var builder = WebApplication.CreateBuilder(args);
-
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
 // Add services to the container.
 builder.Services.AddInfrastructure(builder.Configuration);
-
+builder.Services.AddApplication();
 builder.Services.AddControllers();
 
 

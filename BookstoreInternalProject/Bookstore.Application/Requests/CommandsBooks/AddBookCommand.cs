@@ -41,9 +41,10 @@ namespace Bookstore.Application.Requests.Commands
                         Genre = request.Genre,
                         YearOfPublishing = request.YearOfPublishing,
                         AuthorId = author.Id,
-                        CreatedAt = DateTime.Now,
-                        ModifiedAt = DateTime.Now
+                        CreatedAt = DateTime.UtcNow,
+                        ModifiedAt = DateTime.UtcNow
                     });
+
                     await this.context.SaveChangesAsync();
                     return true;
                 }

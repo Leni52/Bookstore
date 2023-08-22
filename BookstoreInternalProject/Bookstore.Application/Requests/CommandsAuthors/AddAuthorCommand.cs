@@ -25,8 +25,8 @@ namespace Bookstore.Application.Requests.CommandsAuthors
                     {
                         Name = request.Name,
                         Biography = request.Biography,
-                        CreatedAt = DateTime.Now,
-                        ModifiedAt = DateTime.Now
+                        CreatedAt = DateTime.UtcNow,
+                        ModifiedAt = DateTime.UtcNow
 
                     });
                     await this.context.SaveChangesAsync();

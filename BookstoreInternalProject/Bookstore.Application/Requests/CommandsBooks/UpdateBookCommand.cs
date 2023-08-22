@@ -47,7 +47,7 @@ namespace Bookstore.Application.Requests.CommandsBooks
                 bookToUpdate.Genre = command.Genre;
                 bookToUpdate.YearOfPublishing = command.YearOfPublishing;
                 bookToUpdate.AuthorId = command.AuthorId;
-                bookToUpdate.ModifiedAt = DateTime.Now;
+                bookToUpdate.ModifiedAt = DateTime.UtcNow;
                 await context.SaveChangesAsync();
                 return bookToUpdate;
             }

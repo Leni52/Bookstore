@@ -36,7 +36,7 @@ namespace Bookstore.Application.Requests.CommandsAuthors
                 }
                 authorToUpdate.Name = command.Title;
                 authorToUpdate.Biography = command.Biography;
-                authorToUpdate.ModifiedAt = DateTime.Now;
+                authorToUpdate.ModifiedAt = DateTime.UtcNow;
                 await context.SaveChangesAsync();
                 return authorToUpdate;
             }
