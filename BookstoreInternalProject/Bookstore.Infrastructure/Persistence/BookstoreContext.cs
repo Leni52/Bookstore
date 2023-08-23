@@ -22,7 +22,7 @@ namespace Bookstore.Infrastructure.Persistence
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseNpgsql("ConnectionStrings:Default");
+                optionsBuilder.UseNpgsql("ConnectionStrings:Additional");
             }
 
             base.OnConfiguring(optionsBuilder);

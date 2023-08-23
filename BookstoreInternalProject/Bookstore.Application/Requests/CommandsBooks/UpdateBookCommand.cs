@@ -19,8 +19,9 @@ namespace Bookstore.Application.Requests.CommandsBooks
         public GenreType Genre { get; set; }
         public int YearOfPublishing { get; set; }
         public Guid AuthorId { get; set; }
-        public UpdateBookCommand(string title, string description, int yearOfPublishing, Guid authorId, GenreType genre)
+        public UpdateBookCommand(Guid bookId, string title, string description, int yearOfPublishing, Guid authorId, GenreType genre)
         {
+            BookId = bookId;
             Title = title;
             Description = description;
             YearOfPublishing = yearOfPublishing;
@@ -37,18 +38,22 @@ namespace Bookstore.Application.Requests.CommandsBooks
 
             public async Task<Book> Handle(UpdateBookCommand command, CancellationToken cancellationToken)
             {
-                var bookToUpdate = await context.Books.Where(b => b.Id == command.BookId).FirstOrDefaultAsync();
+                var bookToUpdate = await context.Books
+                    .FirstOrDefaultAsync(b => b.Id == command.BookId, cancellationToken);
+
                 if (bookToUpdate == null)
                 {
                     throw new ArgumentNullException(nameof(bookToUpdate));
                 }
-                bookToUpdate.Title = command.Title;
-                bookToUpdate.Description = command.Description;
-                bookToUpdate.Genre = command.Genre;
-                bookToUpdate.YearOfPublishing = command.YearOfPublishing;
-                bookToUpdate.AuthorId = command.AuthorId;
+
+                bookToUpdate.Title = command.Title ?? bookToUpdate.Title;
+                bookToUpdate.Description = command.Description ?? bookToUpdate.Description;
+                bookToUpdate.Genre = command.Genre == 0 ? bookToUpdate.Genre : command.Genre;
+                bookToUpdate.YearOfPublishing = command.YearOfPublishing == 0 ? bookToUpdate.YearOfPublishing : command.YearOfPublishing;
+                bookToUpdate.AuthorId = command.AuthorId == Guid.Empty ? bookToUpdate.AuthorId : command.AuthorId;
                 bookToUpdate.ModifiedAt = DateTime.UtcNow;
-                await context.SaveChangesAsync();
+
+                await context.SaveChangesAsync(cancellationToken);
                 return bookToUpdate;
             }
         }
