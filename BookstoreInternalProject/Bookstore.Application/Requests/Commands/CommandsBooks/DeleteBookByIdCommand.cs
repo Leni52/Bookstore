@@ -32,6 +32,10 @@ namespace Bookstore.Application.Requests.Commands.CommandsBooks
                 {
                     throw new ArgumentNullException(nameof(book));
                 }
+                if (book.Quantity > 0)
+                {
+                    book.Quantity -= 1;
+                }
                 context.Books.Remove(book);
                 await context.SaveChangesAsync();
                 return book.Id;
