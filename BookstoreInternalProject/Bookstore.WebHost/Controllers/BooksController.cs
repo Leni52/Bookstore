@@ -1,5 +1,4 @@
-﻿using Bookstore.Application.Requests.Commands;
-using Bookstore.Application.Requests.CommandsBooks;
+﻿using Bookstore.Application.Requests.Commands.CommandsBooks;
 using Bookstore.Application.Requests.Queries.FetchBooks;
 using Bookstore.Domain.Entities;
 using MediatR;

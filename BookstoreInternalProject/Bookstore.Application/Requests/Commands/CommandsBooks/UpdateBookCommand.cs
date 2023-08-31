@@ -9,7 +9,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Bookstore.Application.Requests.CommandsBooks
+namespace Bookstore.Application.Requests.Commands.CommandsBooks
 {
     public class UpdateBookCommand : IRequest<Book>
     {

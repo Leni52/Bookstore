@@ -1,5 +1,4 @@
-﻿using Bookstore.Application.Requests.CommandsAuthors;
-using Bookstore.Application.Requests.CommandsBooks;
+﻿using Bookstore.Application.Requests.Commands.CommandsAuthors;
 using Bookstore.Application.Requests.Queries.FetchAuthors;
 using Bookstore.Domain.Entities;
 using MediatR;

@@ -4,7 +4,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Bookstore.Application.Requests.CommandsAuthors
+namespace Bookstore.Application.Requests.Commands.CommandsAuthors
 {
     public class AddAuthorCommand : IRequest<bool>
     {
@@ -21,7 +21,7 @@ namespace Bookstore.Application.Requests.CommandsAuthors
             {
                 try
                 {
-                    this.context.Authors.Add(new Domain.Entities.Author
+                    context.Authors.Add(new Domain.Entities.Author
                     {
                         Name = request.Name,
                         Biography = request.Biography,
@@ -29,10 +29,10 @@ namespace Bookstore.Application.Requests.CommandsAuthors
                         ModifiedAt = DateTime.UtcNow
 
                     });
-                    await this.context.SaveChangesAsync();
+                    await context.SaveChangesAsync();
                     return true;
                 }
-                catch (System.Exception)
+                catch (Exception)
                 {
                     return false;
                 }

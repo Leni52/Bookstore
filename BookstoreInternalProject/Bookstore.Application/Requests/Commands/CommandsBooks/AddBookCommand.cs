@@ -6,7 +6,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Bookstore.Application.Requests.Commands
+namespace Bookstore.Application.Requests.Commands.CommandsBooks
 {
     public class AddBookCommand : IRequest<bool>
     {
@@ -27,14 +27,14 @@ namespace Bookstore.Application.Requests.Commands
             {
                 try
                 {
-                    var author = await this.context.Authors.FirstOrDefaultAsync(a => a.Name == request.AuthorName);
+                    var author = await context.Authors.FirstOrDefaultAsync(a => a.Name == request.AuthorName);
                     if (author == null)
                     {
                         author = new Domain.Entities.Author { Name = request.AuthorName };
-                        this.context.Authors.Add(author);
-                        await this.context.SaveChangesAsync();
+                        context.Authors.Add(author);
+                        await context.SaveChangesAsync();
                     }
-                    this.context.Books.Add(new Domain.Entities.Book
+                    context.Books.Add(new Domain.Entities.Book
                     {
                         Title = request.Title,
                         Description = request.Description,
@@ -45,11 +45,11 @@ namespace Bookstore.Application.Requests.Commands
                         ModifiedAt = DateTime.UtcNow
                     });
 
-                    await this.context.SaveChangesAsync();
+                    await context.SaveChangesAsync();
                     return true;
                 }
 
-                catch (System.Exception)
+                catch (Exception)
                 {
 
                     return false;

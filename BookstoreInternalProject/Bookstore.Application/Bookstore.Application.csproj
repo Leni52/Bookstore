@@ -5,16 +5,18 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <Compile Remove="Requests\Queries\NewFolder\**" />
+	  <EmbeddedResource Remove="Requests\Queries\NewFolder\**" />
+	  <None Remove="Requests\Queries\NewFolder\**" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <PackageReference Include="MediatR" Version="12.1.1" />
 	  <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.21" />
 	</ItemGroup>
 
 	<ItemGroup>
 	  <ProjectReference Include="..\Bookstore.Domain\Bookstore.Domain.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="Requests\Queries\NewFolder\" />
 	</ItemGroup>
 
 </Project>

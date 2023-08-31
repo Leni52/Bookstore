@@ -7,7 +7,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Bookstore.Application.Requests.CommandsAuthors
+namespace Bookstore.Application.Requests.Commands.CommandsAuthors
 {
     public class UpdateAuthorCommand : IRequest<Author>
     {

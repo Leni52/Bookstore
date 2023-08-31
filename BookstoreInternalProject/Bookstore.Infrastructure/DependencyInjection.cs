@@ -13,7 +13,7 @@ namespace Bookstore.Infrastructure
         {
             services.AddDbContext<BookstoreContext>(options =>
             {
-                options.UseNpgsql(configuration.GetConnectionString("Additional"));
+                options.UseNpgsql(configuration.GetConnectionString("Default"));
             });
 
             services.AddScoped<IBookStoreContext>(ctx => ctx.GetRequiredService<BookstoreContext>());
