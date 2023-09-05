@@ -1,4 +1,5 @@
 ﻿using Bookstore.Application.Common.Interfaces;
+using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -18,15 +19,23 @@ namespace Bookstore.Application.Requests.Commands.CommandsBooks
         public class DeleteBookByIdHandler : IRequestHandler<DeleteBookByIdCommand, Guid>
         {
             private readonly IBookStoreContext context;
-            public DeleteBookByIdHandler(IBookStoreContext context)
+            private readonly IValidator<DeleteBookByIdCommand> validator;
+            public DeleteBookByIdHandler(IBookStoreContext context, IValidator<DeleteBookByIdCommand> validator)
             {
                 this.context = context;
+                this.validator = validator;
             }
-            public async Task<Guid> Handle(DeleteBookByIdCommand request, CancellationToken cancellationToken)
+            public async Task<Guid> Handle(DeleteBookByIdCommand command, CancellationToken cancellationToken)
             {
+                var validationResult = await validator.ValidateAsync(command);
+                if (!validationResult.IsValid)
+                {
+                    throw new ValidationException(validationResult.Errors);
+                }
+
                 var book = await context
                      .Books
-                     .Where(b => b.Id == request.BookId)
+                     .Where(b => b.Id == command.BookId)
                      .FirstOrDefaultAsync();
                 if (book == null)
                 {

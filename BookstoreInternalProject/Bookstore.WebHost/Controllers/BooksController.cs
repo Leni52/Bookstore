@@ -41,6 +41,7 @@ namespace Bookstore.WebHost.Controllers
             var command = new DeleteBookByTitleCommand(bookTitle);
             return Ok(await this.mediator.Send(command));
         }
+
         [HttpPut("bookId")]
         public async Task<IActionResult> UpdateBookById(Guid bookId, Book book)
         {

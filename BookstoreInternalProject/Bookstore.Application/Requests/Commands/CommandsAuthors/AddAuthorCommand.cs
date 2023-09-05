@@ -1,4 +1,5 @@
 ﻿using Bookstore.Application.Common.Interfaces;
+using FluentValidation;
 using MediatR;
 using System;
 using System.Threading;
@@ -13,18 +14,26 @@ namespace Bookstore.Application.Requests.Commands.CommandsAuthors
         public class AddAuthorCommandHandler : IRequestHandler<AddAuthorCommand, bool>
         {
             private readonly IBookStoreContext context;
-            public AddAuthorCommandHandler(IBookStoreContext context)
+            private readonly IValidator<AddAuthorCommand> validator;
+            public AddAuthorCommandHandler(IBookStoreContext context, IValidator<AddAuthorCommand> validator)
             {
                 this.context = context;
+                this.validator = validator;
             }
-            public async Task<bool> Handle(AddAuthorCommand request, CancellationToken cancellationToken)
+            public async Task<bool> Handle(AddAuthorCommand command, CancellationToken cancellationToken)
             {
+                var validationResult = await validator.ValidateAsync(command);
+                if (!validationResult.IsValid)
+                {
+                    throw new ValidationException(validationResult.Errors);
+                }
+
                 try
                 {
                     context.Authors.Add(new Domain.Entities.Author
                     {
-                        Name = request.Name,
-                        Biography = request.Biography,
+                        Name = command.Name,
+                        Biography = command.Biography,
                         CreatedAt = DateTime.UtcNow,
                         ModifiedAt = DateTime.UtcNow
 

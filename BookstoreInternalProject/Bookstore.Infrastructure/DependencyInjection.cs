@@ -3,7 +3,6 @@ using Bookstore.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System.Runtime.CompilerServices;
 
 namespace Bookstore.Infrastructure
 {
@@ -16,7 +15,7 @@ namespace Bookstore.Infrastructure
                 options.UseNpgsql(configuration.GetConnectionString("Default"));
             });
 
-            services.AddScoped<IBookStoreContext>(ctx => ctx.GetRequiredService<BookstoreContext>());
+            services.AddTransient<IBookStoreContext>(ctx => ctx.GetRequiredService<BookstoreContext>());
 
             return services;
         }

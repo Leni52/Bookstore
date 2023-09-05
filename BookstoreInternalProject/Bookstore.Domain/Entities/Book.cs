@@ -1,6 +1,5 @@
 ﻿using Bookstore.Domain.Common;
 using System;
-using System.Net;
 
 namespace Bookstore.Domain.Entities
 {

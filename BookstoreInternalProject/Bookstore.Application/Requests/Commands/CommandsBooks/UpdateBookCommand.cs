@@ -1,11 +1,10 @@
 ﻿using Bookstore.Application.Common.Interfaces;
-using Bookstore.Application.Requests.Queries.FetchBooks;
 using Bookstore.Domain.Common;
 using Bookstore.Domain.Entities;
+using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -33,13 +32,21 @@ namespace Bookstore.Application.Requests.Commands.CommandsBooks
         public class UpdateBookCommandHandler : IRequestHandler<UpdateBookCommand, Book>
         {
             private readonly IBookStoreContext context;
-            public UpdateBookCommandHandler(IBookStoreContext context)
+            private readonly IValidator<UpdateBookCommand> validator;
+            public UpdateBookCommandHandler(IBookStoreContext context, IValidator<UpdateBookCommand> validator)
             {
                 this.context = context;
+                this.validator = validator;
             }
 
             public async Task<Book> Handle(UpdateBookCommand command, CancellationToken cancellationToken)
             {
+                var validationResult = await validator.ValidateAsync(command);
+                if (!validationResult.IsValid)
+                {
+                    throw new ValidationException(validationResult.Errors);
+                }
+
                 var bookToUpdate = await context.Books
                     .FirstOrDefaultAsync(b => b.Id == command.BookId, cancellationToken);
 
