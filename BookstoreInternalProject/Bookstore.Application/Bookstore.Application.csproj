@@ -14,8 +14,4 @@
 	  <ProjectReference Include="..\Bookstore.Domain\Bookstore.Domain.csproj" />
 	</ItemGroup>
 
-	<ItemGroup>
-	  <Folder Include="Requests\Queries\Validators\ValidatorsQueriesOrders\" />
-	</ItemGroup>
-
 </Project>

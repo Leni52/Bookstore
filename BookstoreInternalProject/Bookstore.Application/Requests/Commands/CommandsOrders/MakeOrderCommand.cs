@@ -1,4 +1,5 @@
 ﻿using Bookstore.Application.Common.Interfaces;
+using Bookstore.Application.Requests.Commands.CommandsOrders;
 using Bookstore.Domain.Common;
 using Bookstore.Domain.Entities;
 using FluentValidation;
@@ -16,8 +17,7 @@ namespace Bookstore.Application.Requests.Commands.CommandsCustomers
         public string CustomerName { get; set; }
         public string CustomerAdress { get; set; }
         public int BookQuantity { get; set; }
-        public double TotalAmount { get; set; }
-        public ICollection<Book> OrderedBooks { get; set; }
+        public ICollection<BookOrderDto> OrderedBooks { get; set; }
 
         public class MakeOrderCommandHandler : IRequestHandler<MakeOrderCommand, bool>
         {
@@ -52,7 +52,7 @@ namespace Bookstore.Application.Requests.Commands.CommandsCustomers
                         CustomerName = command.CustomerName,
                         CustomerAddress = command.CustomerAdress,
                         TotalAmount = totalAmount,
-                        OrderedBooks = command.OrderedBooks,
+                        // OrderedBooks = command.OrderedBooks,
                         CreatedAt = DateTime.UtcNow,
                         OrderStatus = OrderStatus.Received
                     };
@@ -68,9 +68,30 @@ namespace Bookstore.Application.Requests.Commands.CommandsCustomers
                 }
             }
 
-            private double CalculateTotalAmount(ICollection<Book> orderedBooks)
+            private double CalculateTotalAmount(ICollection<BookOrderDto> orderedBooks)
             {
-                return orderedBooks.Sum(book => book.Price * book.Quantity);
+                double totalAmount = 0;
+
+                foreach (var bookOrderDto in orderedBooks)
+                {
+                    double bookPrice = GetBookPriceByTitle(bookOrderDto.Title);
+
+                    double subtotal = bookPrice * bookOrderDto.Quantity;
+
+                    totalAmount += subtotal;
+                }
+
+                return totalAmount;
+            }
+
+            private double GetBookPriceByTitle(string bookTitle)
+            {
+                var book = context.Books.FirstOrDefault(x => x.Title == bookTitle);
+                if (book != null)
+                {
+                    return book.Price;
+                }
+                return 0;
             }
         }
     }
