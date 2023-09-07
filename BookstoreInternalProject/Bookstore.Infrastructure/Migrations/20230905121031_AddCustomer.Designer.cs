@@ -3,6 +3,7 @@ using System;
 using Bookstore.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Bookstore.Infrastructure.Migrations
 {
     [DbContext(typeof(BookstoreContext))]
-    partial class BookstoreContextModelSnapshot : ModelSnapshot
+    [Migration("20230905121031_AddCustomer")]
+    partial class AddCustomer
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -69,12 +71,6 @@ namespace Bookstore.Infrastructure.Migrations
                     b.Property<DateTime>("ModifiedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid?>("OrderId")
-                        .HasColumnType("uuid");
-
-                    b.Property<double>("Price")
-                        .HasColumnType("double precision");
-
                     b.Property<int>("Quantity")
                         .HasColumnType("integer");
 
@@ -89,8 +85,6 @@ namespace Bookstore.Infrastructure.Migrations
                     b.HasIndex("AuthorId");
 
                     b.HasIndex("CustomerId");
-
-                    b.HasIndex("OrderId");
 
                     b.ToTable("Books");
                 });
@@ -113,47 +107,9 @@ namespace Bookstore.Infrastructure.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
-                    b.Property<Guid>("OrderId")
-                        .HasColumnType("uuid");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("OrderId")
-                        .IsUnique();
 
                     b.ToTable("Customers");
-                });
-
-            modelBuilder.Entity("Bookstore.Domain.Entities.Order", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("CustomerAddress")
-                        .HasColumnType("text");
-
-                    b.Property<Guid>("CustomerId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("CustomerName")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("ModifiedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<int>("OrderStatus")
-                        .HasColumnType("integer");
-
-                    b.Property<double>("TotalAmount")
-                        .HasColumnType("double precision");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Orders");
                 });
 
             modelBuilder.Entity("Bookstore.Domain.Entities.Book", b =>
@@ -168,22 +124,7 @@ namespace Bookstore.Infrastructure.Migrations
                         .WithMany("Books")
                         .HasForeignKey("CustomerId");
 
-                    b.HasOne("Bookstore.Domain.Entities.Order", null)
-                        .WithMany("OrderedBooks")
-                        .HasForeignKey("OrderId");
-
                     b.Navigation("Author");
-                });
-
-            modelBuilder.Entity("Bookstore.Domain.Entities.Customer", b =>
-                {
-                    b.HasOne("Bookstore.Domain.Entities.Order", "Order")
-                        .WithOne("Customer")
-                        .HasForeignKey("Bookstore.Domain.Entities.Customer", "OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Order");
                 });
 
             modelBuilder.Entity("Bookstore.Domain.Entities.Author", b =>
@@ -194,13 +135,6 @@ namespace Bookstore.Infrastructure.Migrations
             modelBuilder.Entity("Bookstore.Domain.Entities.Customer", b =>
                 {
                     b.Navigation("Books");
-                });
-
-            modelBuilder.Entity("Bookstore.Domain.Entities.Order", b =>
-                {
-                    b.Navigation("Customer");
-
-                    b.Navigation("OrderedBooks");
                 });
 #pragma warning restore 612, 618
         }

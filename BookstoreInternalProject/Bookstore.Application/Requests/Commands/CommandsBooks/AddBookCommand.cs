@@ -15,6 +15,7 @@ namespace Bookstore.Application.Requests.Commands.CommandsBooks
         public string Description { get; set; }
         public int YearOfPublishing { get; set; }
         public int Quantity { get; set; }
+        public double Price { get; set; }
         public GenreType Genre { get; set; }
         public string AuthorName { get; set; }
         public class AddBookCommandHandler : IRequestHandler<AddBookCommand, bool>
@@ -49,6 +50,7 @@ namespace Bookstore.Application.Requests.Commands.CommandsBooks
                         Description = command.Description,
                         Genre = command.Genre,
                         YearOfPublishing = command.YearOfPublishing,
+                        Price = command.Price,
                         Quantity = command.Quantity,
                         AuthorId = author.Id,
                         CreatedAt = DateTime.UtcNow,

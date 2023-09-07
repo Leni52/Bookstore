@@ -18,4 +18,14 @@ namespace Bookstore.Domain.Common
         Art = 8,
         Gardening = 9
     }
+
+    public enum OrderStatus
+    {
+        NotFinished = 1,
+        Failed = 2,
+        Received = 3,
+        InDelivery = 3,
+        FailedDelivery = 4,
+        SuccessfulDelivery = 5
+    }
 }

@@ -33,6 +33,7 @@ namespace Bookstore.Application.Requests.Queries.FetchBooks
                         Title = b.Title,
                         Description = b.Description,
                         YearOfPublishing = b.YearOfPublishing,
+                        Price = b.Price,
                         Quantity = b.Quantity,
                         Genre = b.Genre,
                         AuthorName = b.Author.Name

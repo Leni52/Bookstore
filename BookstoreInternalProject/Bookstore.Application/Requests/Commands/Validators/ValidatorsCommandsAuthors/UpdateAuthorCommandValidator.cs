@@ -1,11 +1,11 @@
 ﻿using Bookstore.Application.Requests.Commands.CommandsAuthors;
 using FluentValidation;
 
-namespace Bookstore.Application.Requests.Commands.ValidatorsAuthors
+namespace Bookstore.Application.Requests.Commands.Validators.ValidatorsCommandsAuthors
 {
-    public class CreateAuthorCommandValidator : AbstractValidator<AddAuthorCommand>
+    public class UpdateAuthorCommandValidator : AbstractValidator<UpdateAuthorCommand>
     {
-        public CreateAuthorCommandValidator()
+        public UpdateAuthorCommandValidator()
         {
             RuleFor(command => command.Name)
                 .NotEmpty()

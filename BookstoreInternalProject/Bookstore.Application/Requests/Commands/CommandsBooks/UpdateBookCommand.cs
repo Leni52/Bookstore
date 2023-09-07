@@ -17,14 +17,16 @@ namespace Bookstore.Application.Requests.Commands.CommandsBooks
         public string Description { get; set; }
         public GenreType Genre { get; set; }
         public int YearOfPublishing { get; set; }
+        public double Price { get; set; }
         public int Quantity { get; set; }
         public Guid AuthorId { get; set; }
-        public UpdateBookCommand(Guid bookId, string title, string description, int yearOfPublishing, int quantity, Guid authorId, GenreType genre)
+        public UpdateBookCommand(Guid bookId, string title, string description, int yearOfPublishing, double price, int quantity, Guid authorId, GenreType genre)
         {
             BookId = bookId;
             Title = title;
             Description = description;
             YearOfPublishing = yearOfPublishing;
+            Price = price;
             Quantity = quantity;
             AuthorId = authorId;
             Genre = genre;
@@ -60,6 +62,7 @@ namespace Bookstore.Application.Requests.Commands.CommandsBooks
                 bookToUpdate.Genre = command.Genre == 0 ? bookToUpdate.Genre : command.Genre;
                 bookToUpdate.YearOfPublishing = command.YearOfPublishing == 0 ? bookToUpdate.YearOfPublishing : command.YearOfPublishing;
                 bookToUpdate.Quantity = command.Quantity == 0 ? bookToUpdate.Quantity : command.Quantity;
+                bookToUpdate.Price = command.Price == 0 ? bookToUpdate.Price : command.Price;
                 bookToUpdate.AuthorId = command.AuthorId == Guid.Empty ? bookToUpdate.AuthorId : command.AuthorId;
                 bookToUpdate.ModifiedAt = DateTime.UtcNow;
 

@@ -2,7 +2,7 @@
 using FluentValidation;
 using System;
 
-namespace Bookstore.Application.Requests.Commands.ValidatorsBooks
+namespace Bookstore.Application.Requests.Commands.Validators.ValidatorsCommandsBooks
 {
     public class UpdateBookCommandValidator : AbstractValidator<UpdateBookCommand>
     {
@@ -27,6 +27,10 @@ namespace Bookstore.Application.Requests.Commands.ValidatorsBooks
             RuleFor(command => command.Quantity)
                 .GreaterThan(0)
                 .WithMessage("Quantity must be greater than 0.");
+
+            RuleFor(command => command.Price)
+                .GreaterThan(0)
+                .WithMessage("Price must be greater than 0.");
 
             RuleFor(command => command.YearOfPublishing)
                 .InclusiveBetween(1800, DateTime.Now.Year)

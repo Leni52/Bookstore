@@ -50,7 +50,7 @@ namespace Bookstore.WebHost.Controllers
                 return BadRequest();
             }
 
-            var command = new UpdateBookCommand(bookId, book.Title, book.Description, book.YearOfPublishing, book.Quantity, book.AuthorId, book.Genre);
+            var command = new UpdateBookCommand(bookId, book.Title, book.Description, book.YearOfPublishing, book.Price, book.Quantity, book.AuthorId, book.Genre);
             var result = await mediator.Send(command);
             return Ok(result);
         }

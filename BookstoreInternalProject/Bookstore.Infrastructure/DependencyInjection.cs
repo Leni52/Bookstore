@@ -15,7 +15,7 @@ namespace Bookstore.Infrastructure
                 options.UseNpgsql(configuration.GetConnectionString("Default"));
             });
 
-            services.AddTransient<IBookStoreContext>(ctx => ctx.GetRequiredService<BookstoreContext>());
+            services.AddScoped<IBookStoreContext>(ctx => ctx.GetRequiredService<BookstoreContext>());
 
             return services;
         }

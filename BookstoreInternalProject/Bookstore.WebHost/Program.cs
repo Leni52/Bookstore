@@ -1,9 +1,10 @@
 using Bookstore.Application;
 using Bookstore.Application.Requests;
-using Bookstore.Application.Requests.Commands.ValidatorsAuthors;
-using Bookstore.Application.Requests.Commands.ValidatorsBooks;
-using Bookstore.Application.Requests.Queries.Validators;
-using Bookstore.Application.Requests.Queries.ValidatorsQueriesAuthors;
+using Bookstore.Application.Requests.Commands.Validators.ValidatorsCommandsAuthors;
+using Bookstore.Application.Requests.Commands.Validators.ValidatorsCommandsBooks;
+using Bookstore.Application.Requests.Commands.Validators.ValidatorsCommandsOrders;
+using Bookstore.Application.Requests.Queries.Validators.ValidatorsQueriesAuthors;
+using Bookstore.Application.Requests.Queries.Validators.ValidatorsQueriesBooks;
 using Bookstore.Infrastructure;
 using FluentValidation;
 using MediatR;
@@ -21,7 +22,7 @@ builder.Services.AddValidatorsFromAssembly(Assembly.GetAssembly(typeof(FetchAllB
 builder.Services.AddValidatorsFromAssembly(Assembly.GetAssembly(typeof(FetchAllAuthorsQueryValidator)));
 builder.Services.AddValidatorsFromAssembly(Assembly.GetAssembly(typeof(CreateAuthorCommandValidator)));
 builder.Services.AddValidatorsFromAssembly(Assembly.GetAssembly(typeof(UpdateAuthorCommandValidator)));
-
+builder.Services.AddValidatorsFromAssembly(Assembly.GetAssembly(typeof(MakeOrderCommandValidator)));
 
 // Add services to the container.
 builder.Services.AddInfrastructure(builder.Configuration);
