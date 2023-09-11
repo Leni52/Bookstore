@@ -15,9 +15,7 @@ namespace Bookstore.Application.Requests.Commands.Validators.ValidatorsCommandsO
 
             RuleFor(command => command.CustomerAdress).NotEmpty().WithMessage("Adress is required.");
 
-            RuleFor(command => command.OrderedBooks)
-                .NotEmpty()
-                .WithMessage("At least 1 book is required for the order.");
+
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Bookstore.Application.Common.Interfaces;
+﻿using AutoMapper;
+using Bookstore.Application.Common.Interfaces;
 using Bookstore.Application.Requests.Commands.CommandsOrders;
 using Bookstore.Domain.Common;
 using Bookstore.Domain.Entities;
@@ -17,20 +18,23 @@ namespace Bookstore.Application.Requests.Commands.CommandsCustomers
         public string CustomerName { get; set; }
         public string CustomerAdress { get; set; }
         public int BookQuantity { get; set; }
-        public ICollection<BookOrderDto> OrderedBooks { get; set; }
+        public ICollection<BookOrderDto> OrderedBooksDto { get; set; }
 
         public class MakeOrderCommandHandler : IRequestHandler<MakeOrderCommand, bool>
         {
             private readonly IBookStoreContext context;
             private readonly IValidator<MakeOrderCommand> validator;
+            private readonly IMapper mapper;
 
             public MakeOrderCommandHandler(
                 IBookStoreContext context,
-                IValidator<MakeOrderCommand> validator
+                IValidator<MakeOrderCommand> validator,
+                IMapper mapper
             )
             {
                 this.context = context;
                 this.validator = validator;
+                this.mapper = mapper;
             }
 
             public async Task<bool> Handle(
@@ -46,13 +50,17 @@ namespace Bookstore.Application.Requests.Commands.CommandsCustomers
 
                 try
                 {
-                    double totalAmount = CalculateTotalAmount(command.OrderedBooks);
+                    double totalAmount = CalculateTotalAmount(command.OrderedBooksDto);
+                    var orderedBooks = mapper.Map<ICollection<Book>>(command.OrderedBooksDto);
+
+                    var orderedItems = mapper.Map<ICollection<OrderItem>>(command.OrderedBooksDto);
+
                     var order = new Order
                     {
                         CustomerName = command.CustomerName,
                         CustomerAddress = command.CustomerAdress,
                         TotalAmount = totalAmount,
-                        // OrderedBooks = command.OrderedBooks,
+                        OrderItems = orderedItems,
                         CreatedAt = DateTime.UtcNow,
                         OrderStatus = OrderStatus.Received
                     };

@@ -1,11 +1,8 @@
 ﻿using Bookstore.Domain.Common;
-using System;
-using System.Collections;
-using System.Collections.Generic;
 
-namespace Bookstore.Domain.Entities
+namespace Bookstore.Application.Requests.Commands.CommandsOrders
 {
-    public class Book : Entity
+    public class BookResponseDto
     {
         public string Title { get; set; }
         public string Description { get; set; }
@@ -13,8 +10,5 @@ namespace Bookstore.Domain.Entities
         public int Quantity { get; set; }
         public double Price { get; set; }
         public GenreType Genre { get; set; }
-        public Guid AuthorId { get; set; }
-        public Author Author { get; set; }
-        public ICollection<OrderItem> OrderItems { get; set; }
     }
 }

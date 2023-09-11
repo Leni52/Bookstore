@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Threading;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using Bookstore.Application.Requests.Commands.CommandsOrders;
 
 namespace Bookstore.Application.Requests.Queries.FetchOrders
 {
@@ -32,18 +33,21 @@ namespace Bookstore.Application.Requests.Queries.FetchOrders
                 var orders = await this.context
                     .Orders
                     .Include(o => o.Customer)
+                    .Include(o => o.OrderItems)
+                    .ThenInclude(oi => oi.Book)
                     .Select(r => new OrderResponseDto
                     {
                         CustomerAddress = r.CustomerAddress,
                         CustomerName = r.CustomerName,
-                        OrderedBooks = r.OrderedBooks,
                         OrderStatus = r.OrderStatus,
-
+                        OrderedBooks = r.OrderItems.Select(oi => oi.Book).ToList(),
+                        TotalAmount = r.OrderItems.Sum(oi => oi.Book.Price * oi.Quantity)
                     })
                     .ToListAsync();
 
                 return orders;
             }
+
         }
     }
 }

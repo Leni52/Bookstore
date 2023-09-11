@@ -9,7 +9,7 @@ namespace Bookstore.Domain.Entities
         public string CustomerName { get; set; }
         public string CustomerAddress { get; set; }
         public double TotalAmount { get; set; }
-        public ICollection<Book> OrderedBooks { get; set; }
+        public ICollection<OrderItem> OrderItems { get; set; }
         public OrderStatus OrderStatus { get; set; }
         public Guid CustomerId { get; set; }
         public Customer Customer { get; set; }
