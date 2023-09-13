@@ -65,6 +65,16 @@ namespace Bookstore.Application.Requests.Commands.CommandsCustomers
                         OrderStatus = OrderStatus.Received
                     };
 
+                    foreach (var bookOrderDto in command.OrderedBooksDto)
+                    {
+                        var book = context.Books.FirstOrDefault(x => x.Title == bookOrderDto.Title);
+                        if (book != null)
+                        {
+                            book.Quantity -= bookOrderDto.Quantity;
+                        }
+
+                    }
+
                     context.Orders.Add(order);
                     await context.SaveChangesAsync();
 
