@@ -3,8 +3,8 @@ using Bookstore.Domain.Common;
 using Bookstore.Domain.Entities;
 using FluentValidation;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -49,8 +49,7 @@ namespace Bookstore.Application.Requests.Commands.CommandsBooks
                     throw new ValidationException(validationResult.Errors);
                 }
 
-                var bookToUpdate = await context.Books
-                    .FirstOrDefaultAsync(b => b.Id == command.BookId, cancellationToken);
+                var bookToUpdate = context.Books.FirstOrDefault(b => b.Id == command.BookId);
 
                 if (bookToUpdate == null)
                 {

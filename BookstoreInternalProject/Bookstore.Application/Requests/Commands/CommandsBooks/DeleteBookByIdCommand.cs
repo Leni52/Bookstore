@@ -33,18 +33,16 @@ namespace Bookstore.Application.Requests.Commands.CommandsBooks
                     throw new ValidationException(validationResult.Errors);
                 }
 
-                var book = await context
-                     .Books
-                     .Where(b => b.Id == command.BookId)
-                     .FirstOrDefaultAsync();
+                var book = context.Books
+        .FirstOrDefault(b => b.Id == command.BookId);
+
                 if (book == null)
                 {
-                    throw new ArgumentNullException(nameof(book));
+                    throw new ArgumentNullException($"Book with ID {command.BookId} has not been found.");
                 }
-                if (book.Quantity > 0)
-                {
-                    book.Quantity -= 1;
-                }
+
+                book.Quantity = book.Quantity > 0 ? book.Quantity - 1 : 0;
+
                 context.Books.Remove(book);
                 await context.SaveChangesAsync();
                 return book.Id;

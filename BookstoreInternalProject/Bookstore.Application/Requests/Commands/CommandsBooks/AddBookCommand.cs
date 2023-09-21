@@ -4,6 +4,7 @@ using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -37,7 +38,7 @@ namespace Bookstore.Application.Requests.Commands.CommandsBooks
                 }
                 try
                 {
-                    var author = await context.Authors.FirstOrDefaultAsync(a => a.Name == command.AuthorName);
+                    var author = context.Authors.FirstOrDefault(a => a.Name == command.AuthorName);
                     if (author == null)
                     {
                         author = new Domain.Entities.Author { Name = command.AuthorName };
