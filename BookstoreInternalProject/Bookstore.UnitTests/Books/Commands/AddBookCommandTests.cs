@@ -1,6 +1,5 @@
 ﻿using Bookstore.Application.Common.Interfaces;
 using Bookstore.Application.Requests.Commands.CommandsBooks;
-using Bookstore.Domain.Common;
 using Bookstore.Domain.Entities;
 using FluentValidation;
 using FluentValidation.Results;
@@ -82,7 +81,7 @@ namespace Bookstore.UnitTests.Books.Commands
 
             // Mock the validation result to indicate validation failure
             mockValidator.Setup(v => v.ValidateAsync(command, CancellationToken.None))
-                .ReturnsAsync(new ValidationResult(new[] { new ValidationFailure("PropertyName", "Error Message") }));
+                .ReturnsAsync(new ValidationResult(new[] { new ValidationFailure() }));
 
             var handler = new AddBookCommand.AddBookCommandHandler(mockContext.Object, mockValidator.Object);
 
@@ -90,6 +89,92 @@ namespace Bookstore.UnitTests.Books.Commands
             await Assert.ThrowsAsync<ValidationException>(() => handler.Handle(command, CancellationToken.None));
         }
 
+        [Fact]
+        public async Task Handle_MissingTitle_ThrowsValidationException()
+        {
+            // Arrange
+            var command = new AddBookCommand
+            {
+                Title = null, //invalid title
+                Description = "Sample Description",
+                YearOfPublishing = 2023,
+                Quantity = 10,
+                Price = 19.99,
+                Genre = Domain.Common.GenreType.ScienceFiction,
+                AuthorName = "Author1"
+            };
 
+            var mockContext = new Mock<IBookStoreContext>();
+            var mockValidator = new Mock<IValidator<AddBookCommand>>();
+
+            // Mock the validation result to indicate failure
+            mockValidator.Setup(v => v.ValidateAsync(command, CancellationToken.None))
+             .ReturnsAsync(new ValidationResult(new[] { new ValidationFailure("Title", "Title is required.") }));
+
+            var handler = new AddBookCommand.AddBookCommandHandler(mockContext.Object, mockValidator.Object);
+
+            // Act and Assert
+            var exception = await Assert.ThrowsAsync<ValidationException>(() => handler.Handle(command, CancellationToken.None));
+            Assert.Contains("Title is required.", exception.Message);
+        }
+
+        [Fact]
+        public async Task Handle_InvalidYear_ThrowsValidationException()
+        {
+            // Arrange
+            var command = new AddBookCommand
+            {
+                Title = "Title",
+                Description = "Sample Description",
+                YearOfPublishing = DateTime.UtcNow.Year + 1,
+                Quantity = 10,
+                Price = 19.99,
+                Genre = Domain.Common.GenreType.ScienceFiction,
+                AuthorName = "Author1"
+            };
+
+            var mockContext = new Mock<IBookStoreContext>();
+            var mockValidator = new Mock<IValidator<AddBookCommand>>();
+
+            // Mock the validation result to indicate failure           
+            mockValidator.Setup(v => v.ValidateAsync(command, CancellationToken.None))
+                .ReturnsAsync(new ValidationResult(new[] { new ValidationFailure("YearOfPublishing", "Invalid year of publishing.") }));
+
+            var handler = new AddBookCommand.AddBookCommandHandler(mockContext.Object, mockValidator.Object);
+
+            // Act and Assert
+            var exception = await Assert.ThrowsAsync<ValidationException>(() => handler.Handle(command, CancellationToken.None));
+            Assert.Contains("Invalid year of publishing.", exception.Message);
+
+
+        }
+        [Fact]
+        public async Task Handle_InvalidPrice_ThrowsValidationException()
+        {
+            // Arrange
+            var command = new AddBookCommand
+            {
+                Title = "Title1",
+                Description = "Sample Description",
+                YearOfPublishing = DateTime.UtcNow.Year + 1,
+                Quantity = 10,
+                Price = -10,
+                Genre = Domain.Common.GenreType.ScienceFiction,
+                AuthorName = "Author1"
+            };
+
+            var mockContext = new Mock<IBookStoreContext>();
+            var mockValidator = new Mock<IValidator<AddBookCommand>>();
+
+            // Mock the validation result to indicate failure           
+            mockValidator.Setup(v => v.ValidateAsync(command, CancellationToken.None))
+                .ReturnsAsync(new ValidationResult(new[] { new ValidationFailure("Price", "Price must be greater than 0.") }));
+
+            var handler = new AddBookCommand.AddBookCommandHandler(mockContext.Object, mockValidator.Object);
+
+            // Act and Assert
+            var exception = await Assert.ThrowsAsync<ValidationException>(() => handler.Handle(command, CancellationToken.None));
+            Assert.Contains("Price must be greater than 0.", exception.Message);
+        }
     }
 }

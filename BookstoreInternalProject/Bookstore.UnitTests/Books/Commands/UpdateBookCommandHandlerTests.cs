@@ -6,6 +6,7 @@ using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.EntityFrameworkCore;
 using Moq;
+using System;
 using Xunit;
 
 namespace Bookstore.UnitTests.Books.Commands
@@ -94,7 +95,7 @@ namespace Bookstore.UnitTests.Books.Commands
 
             // Mock the validation result to indicate validation failure
             mockValidator.Setup(v => v.ValidateAsync(command, CancellationToken.None))
-                .ReturnsAsync(new ValidationResult(new[] { new ValidationFailure("PropertyName", "Error Message") }));
+                .ReturnsAsync(new ValidationResult(new[] { new ValidationFailure() }));
 
             var handler = new UpdateBookCommand.UpdateBookCommandHandler(mockContext.Object, mockValidator.Object);
 
@@ -156,7 +157,9 @@ namespace Bookstore.UnitTests.Books.Commands
             var handler = new UpdateBookCommand.UpdateBookCommandHandler(mockContext.Object, mockValidator.Object);
 
             // Act and Assert
-            await Assert.ThrowsAsync<ValidationException>(() => handler.Handle(command, CancellationToken.None));
+            var exception = await Assert.ThrowsAsync<ValidationException>(() => handler.Handle(command, CancellationToken.None));
+            Assert.Contains("Title is required.", exception.Message);
+
         }
 
         [Fact]
@@ -184,7 +187,8 @@ namespace Bookstore.UnitTests.Books.Commands
             var handler = new UpdateBookCommand.UpdateBookCommandHandler(mockContext.Object, mockValidator.Object);
 
             // Act and Assert
-            await Assert.ThrowsAsync<ValidationException>(() => handler.Handle(command, CancellationToken.None));
+            var exception = await Assert.ThrowsAsync<ValidationException>(() => handler.Handle(command, CancellationToken.None));
+            Assert.Contains("Description must be at least 3 characters.", exception.Message);
         }
 
         [Fact]
@@ -212,7 +216,8 @@ namespace Bookstore.UnitTests.Books.Commands
             var handler = new UpdateBookCommand.UpdateBookCommandHandler(mockContext.Object, mockValidator.Object);
 
             // Act and Assert
-            await Assert.ThrowsAsync<ValidationException>(() => handler.Handle(command, CancellationToken.None));
+            var exception = await Assert.ThrowsAsync<ValidationException>(() => handler.Handle(command, CancellationToken.None));
+            Assert.Contains("Invalid year of publishing.", exception.Message);
         }
 
         [Fact]
@@ -240,7 +245,8 @@ namespace Bookstore.UnitTests.Books.Commands
             var handler = new UpdateBookCommand.UpdateBookCommandHandler(mockContext.Object, mockValidator.Object);
 
             // Act and Assert
-            await Assert.ThrowsAsync<ValidationException>(() => handler.Handle(command, CancellationToken.None));
+            var exception = await Assert.ThrowsAsync<ValidationException>(() => handler.Handle(command, CancellationToken.None));
+            Assert.Contains("Price must be greater than 0.", exception.Message);
         }
 
         [Fact]
@@ -268,7 +274,8 @@ namespace Bookstore.UnitTests.Books.Commands
             var handler = new UpdateBookCommand.UpdateBookCommandHandler(mockContext.Object, mockValidator.Object);
 
             // Act and Assert
-            await Assert.ThrowsAsync<ValidationException>(() => handler.Handle(command, CancellationToken.None));
+            var exception = await Assert.ThrowsAsync<ValidationException>(() => handler.Handle(command, CancellationToken.None));
+            Assert.Contains("Quantity must be greater than 0.", exception.Message);
         }
 
         [Fact]
@@ -296,9 +303,11 @@ namespace Bookstore.UnitTests.Books.Commands
             var handler = new UpdateBookCommand.UpdateBookCommandHandler(mockContext.Object, mockValidator.Object);
 
             // Act and Assert
-            await Assert.ThrowsAsync<ValidationException>(() => handler.Handle(command, CancellationToken.None));
+            var exception = await Assert.ThrowsAsync<ValidationException>(() => handler.Handle(command, CancellationToken.None));
+            Assert.Contains("Invalid genre.", exception.Message);
         }
-
     }
+
 }
+
 

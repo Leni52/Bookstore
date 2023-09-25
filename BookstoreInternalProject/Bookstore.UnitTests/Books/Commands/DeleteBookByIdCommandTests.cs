@@ -68,7 +68,6 @@ namespace Bookstore.UnitTests.Books.Commands
             mockValidator.Setup(v => v.ValidateAsync(command, CancellationToken.None))
                 .ReturnsAsync(new ValidationResult());
 
-
             var handler = new DeleteBookByIdCommand.DeleteBookByIdHandler(mockContext.Object, mockValidator.Object);
 
             // Act and Assert
