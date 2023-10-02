@@ -23,7 +23,8 @@ namespace Bookstore.Application.Requests.Commands.CommandsBooks
         {
             private readonly IBookStoreContext context;
             private readonly IValidator<AddBookCommand> validator;
-            public AddBookCommandHandler(IBookStoreContext context, IValidator<AddBookCommand> validator)
+            public AddBookCommandHandler(IBookStoreContext context, IValidator<AddBookCommand> validator
+                )
             {
                 this.context = context;
                 this.validator = validator;
@@ -35,6 +36,7 @@ namespace Bookstore.Application.Requests.Commands.CommandsBooks
                 if (!validationResult.IsValid)
                 {
                     throw new ValidationException(validationResult.Errors);
+
                 }
                 try
                 {
