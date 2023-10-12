@@ -19,7 +19,17 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
 builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationPipelineBehavior<,>));
 
+//cors
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("MVCApp",
+        builder => builder
+        .AllowAnyOrigin()
+        .AllowAnyMethod()
+        .AllowAnyHeader());
+});
 
+//validators
 builder.Services.AddValidatorsFromAssembly(Assembly.GetAssembly(typeof(CreateBookCommandValidator)));
 builder.Services.AddValidatorsFromAssembly(Assembly.GetAssembly(typeof(UpdateBookCommandValidator)));
 builder.Services.AddValidatorsFromAssembly(Assembly.GetAssembly(typeof(DeleteBookCommandValidator)));
@@ -61,6 +71,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors("MVCApp");
 
 app.UseHttpsRedirection();
 
