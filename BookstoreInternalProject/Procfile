@@ -1,0 +1,2 @@
+mvc: dotnet run --project Bookstore.Auth
+webapi: dotnet run --project Bookstore.WebHost
