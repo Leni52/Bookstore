@@ -1,6 +1,8 @@
 ﻿using Bookstore.Auth.Models;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System.Net.Http.Headers;
 
 namespace Bookstore.Auth.Controllers
 {
@@ -8,26 +10,37 @@ namespace Bookstore.Auth.Controllers
     {
         public async Task<IActionResult> Index()
         {
-            IEnumerable<BookViewModel> books = null;
+            IEnumerable<BookViewModel> books = Enumerable.Empty<BookViewModel>();
 
-            using (var client = new HttpClient())
+            var accessToken = await HttpContext.GetTokenAsync("access_token");
+
+            if (accessToken != null)
             {
-                client.BaseAddress = new Uri("https://localhost:7263/api/");
-                //HTTP GET
-                var responseTask = client.GetAsync("Books");
-                responseTask.Wait();
-
-                var result = responseTask.Result;
-                if (result.IsSuccessStatusCode)
+                // You have obtained the access token, and you can use it in your HttpClient requests.
+                using (var client = new HttpClient())
                 {
-                    var content = await responseTask.Result.Content.ReadAsStringAsync();
+                    client.BaseAddress = new Uri("https://localhost:7263/api/");
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
 
 
-                    books = JsonConvert.DeserializeObject<IEnumerable<BookViewModel>>(content);
+                    var response = await client.GetAsync("Books");
 
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var content = await response.Content.ReadAsStringAsync();
+                        books = JsonConvert.DeserializeObject<IEnumerable<BookViewModel>>(content);
+
+                    }
                 }
             }
+            else
+            {
+
+            }
+
             return View(books);
         }
+
+
     }
 }

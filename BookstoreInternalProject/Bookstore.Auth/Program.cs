@@ -6,33 +6,34 @@ using Microsoft.IdentityModel.Tokens;
 var builder = WebApplication.CreateBuilder(args);
 
 //auth
+
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
     options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
 })
-    .AddCookie(options =>
+.AddCookie(options =>
+{
+    options.LoginPath = "/Account/Login";
+    options.LogoutPath = "/Account/Logout";
+})
+.AddOpenIdConnect(options =>
+{
+    options.Authority = "http://localhost:8080/realms/Bookstore";
+    options.ClientId = "bookstoreClient";
+    options.ClientSecret = "pWIRt4x4tZg7sldV4GOO1oBStjBHWtQ5";
+    options.ResponseType = OpenIdConnectResponseType.Code;
+    options.UsePkce = true;
+    options.Scope.Add("openid");
+    options.Scope.Add("profile");
+    options.SaveTokens = true;
+    options.RequireHttpsMetadata = false;
+    options.TokenValidationParameters = new TokenValidationParameters
     {
-        options.LoginPath = "/Account/Login";
-    })
-    .AddOpenIdConnect(options =>
-    {
-        options.Authority = "http://localhost:8080/realms/Bookstore";
-        options.ClientId = "bookstoreClient";
-        options.ClientSecret = "pWIRt4x4tZg7sldV4GOO1oBStjBHWtQ5";
-        options.ResponseType = OpenIdConnectResponseType.Code;
-        options.UsePkce = true;
-        options.Scope.Add("openid");
-        options.Scope.Add("profile");
-        options.SaveTokens = true;
-        options.RequireHttpsMetadata = false;
-        options.TokenValidationParameters = new TokenValidationParameters
-        {
-            NameClaimType = "user",
-            RoleClaimType = "roles"
-        };
-    });
-
+        NameClaimType = "user",
+        RoleClaimType = "roles"
+    };
+});
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();

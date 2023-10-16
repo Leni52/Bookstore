@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 
 public class AccountController : Controller
 {
@@ -20,14 +19,13 @@ public class AccountController : Controller
             OpenIdConnectDefaults.AuthenticationScheme);
     }
 
-    [HttpPost]
-    [ValidateAntiForgeryToken]
+    [Route("account/logout")]
     public async Task<IActionResult> Logout()
     {
         // Sign the user out
         await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
         await HttpContext.SignOutAsync(OpenIdConnectDefaults.AuthenticationScheme);
 
-        return RedirectToAction("Index", "Account");
+        return View();
     }
 }
