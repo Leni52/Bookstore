@@ -1,0 +1,45 @@
+﻿@using System.Security.Claims;
+
+<div class="text-center">
+    <h1 class="display-4">All books collection:</h1>
+   
+</div>
+@model List<BookViewModel>
+
+
+<table class="table">
+    <thead>
+        <tr>          
+            <th>Title</th>
+            <th>Description</th>
+            <th>Year of Publishing</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Genre</th>
+            <th>Author Name</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var book in Model)
+        {
+            <tr>                
+                <td>@book.Title</td>
+                <td>@book.Description</td>
+                <td>@book.YearOfPublishing</td>
+                <td>@book.Price</td>
+                <td>@book.Quantity</td>
+                <td>@book.Genre</td>
+                <td>@book.AuthorName</td>            
+                
+                    
+                <td>
+                    <a asp-controller="BooksMVC" asp-action="Edit" asp-route-id="@book.Id" class="btn btn-primary">Edit</a>
+                    <form method="post" asp-controller="BooksMVC" asp-action="DeleteBook" asp-route-bookId="@book.Id">
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                </td>                    
+                
+            </tr>
+        }
+    </tbody>
+</table>
